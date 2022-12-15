@@ -35,9 +35,9 @@ const Home: NextPage<Props> = (props) => {
   const totalCount = search ? search.totalCount : props.blogs.totalCount;
 
   return (
-    <div>
+    <main className="container mx-auto mt-8 max-w-7xl">
       <form className="flex justify-center gap-x-2" onSubmit={handleSubmit}>
-        <input type="text" name="query" className="rounded border border-black px-2" />
+        <input type="text" name="query" className="rounded border border-black px-2 py-px" />
         <button className="text-md rounded border border-black px-2">検索</button>
         <button type="reset" className="text-md rounded border border-black px-2" onClick={handleReset}>
           リセット
@@ -76,7 +76,7 @@ const Home: NextPage<Props> = (props) => {
           })}
         </ul>
         <div className="mb-5">
-          <h3 className="text-md rouded-full  bg-red-600 px-3 py-1 font-bold text-white w-full sm:w-60">Tags</h3>
+          <h3 className="text-md rouded-full  w-full bg-red-600 px-3 py-1 font-bold text-white sm:w-60">Tags</h3>
           <ul>
             {[...props.tags.contents].reverse().map((tag) => {
               return <li key={tag.id}> {tag.tag}</li>;
@@ -84,7 +84,7 @@ const Home: NextPage<Props> = (props) => {
           </ul>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
