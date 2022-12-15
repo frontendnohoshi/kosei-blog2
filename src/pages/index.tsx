@@ -3,14 +3,17 @@ import "dayjs/locale/ja";
 import { MicroCMSContentId, MicroCMSDate, MicroCMSListResponse } from "microcms-js-sdk";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useCallback, useState } from "react";
+import { getDebugger } from "src/components/utils/Debugger";
 import { client } from "src/libs/client";
 import { Blog, Tag } from "src/types/blog";
 
 type Props = { blogs: MicroCMSListResponse<Blog>; tags: MicroCMSListResponse<Tag> };
 
+const debug = getDebugger(true);
+
 const Home: NextPage<Props> = (props) => {
-  console.log(props);
+  debug("Home is rendering");
 
   const [search, setSearch] = useState<MicroCMSListResponse<Blog>>();
 
@@ -24,18 +27,18 @@ const Home: NextPage<Props> = (props) => {
     });
     const json: MicroCMSListResponse<Blog> = await data.json();
     setSearch(json);
-    console.log(search);
+    debug(json);
   };
 
-  const handleReset: ComponentProps<"button">["onClick"] = () => {
+  const handleReset: ComponentProps<"button">["onClick"] = useCallback(() => {
     setSearch(undefined);
-  };
+  }, []);
 
   const contents = search ? search.contents : props.blogs.contents;
   const totalCount = search ? search.totalCount : props.blogs.totalCount;
 
   return (
-    <main className="container mx-auto mt-8 max-w-7xl">
+    <main className="container mx-auto mt-8 max-w-5xl">
       <form className="flex justify-center gap-x-2" onSubmit={handleSubmit}>
         <input type="text" name="query" className="rounded border border-black px-2 py-px" />
         <button className="text-md rounded border border-black px-2">検索</button>
@@ -51,7 +54,7 @@ const Home: NextPage<Props> = (props) => {
               <li className="sm:r-5 mb-5 mr-0 flex flex-col border-b sm:mr-5" key={content.id}>
                 <h2 className="text-xl font-bold">{content.title}</h2>
                 <div className="mt-3">
-                  <ul className="text-md flex items-center gap-x-1">
+                  <ul className="flex items-center gap-x-2 text-sm">
                     {content.tags.map((tag) => {
                       return (
                         <li className="rounded-full bg-slate-200 px-2" key={tag.id}>
@@ -66,7 +69,7 @@ const Home: NextPage<Props> = (props) => {
                 </div>
                 <Link href={`/blog/${content.id}`}>
                   <a>
-                    <button className="mt-3 mb-5 rounded-xl bg-red-600 p-4 text-sm text-white duration-500 hover:bg-slate-900">
+                    <button className="mt-3 mb-5 rounded-xl bg-red-600 px-4 py-3 text-sm text-white duration-500 hover:bg-slate-900">
                       READ MORE {">>"}
                     </button>
                   </a>
@@ -76,10 +79,10 @@ const Home: NextPage<Props> = (props) => {
           })}
         </ul>
         <div className="mb-5">
-          <h3 className="text-md rouded-full  w-full bg-red-600 px-3 py-1 font-bold text-white sm:w-60">Tags</h3>
-          <ul>
+          <h3 className="text-md rouded-full  mb-3 w-full bg-red-600 px-3 py-1 font-bold text-white sm:w-60"> #Tags</h3>
+          <ul className="ml-1 flex flex-col gap-y-1">
             {[...props.tags.contents].reverse().map((tag) => {
-              return <li key={tag.id}> {tag.tag}</li>;
+              return <li key={tag.id}> #{tag.tag}</li>;
             })}
           </ul>
         </div>
