@@ -8,6 +8,9 @@ import { getDebugger } from "src/components/utils/Debugger";
 import { client } from "src/libs/client";
 import { Blog, Tag } from "src/types/blog";
 
+import { BsTag } from "react-icons/bs";
+import { BiTimeFive } from "react-icons/bi";
+
 type Props = { blogs: MicroCMSListResponse<Blog>; tags: MicroCMSListResponse<Tag> };
 
 const debug = getDebugger(true);
@@ -40,9 +43,17 @@ const Home: NextPage<Props> = (props) => {
   return (
     <main className="container mx-auto mt-8 max-w-5xl">
       <form className="flex justify-center gap-x-2" onSubmit={handleSubmit}>
-        <input type="text" name="query" className="rounded border border-black px-2 py-px" />
-        <button className="text-md rounded border border-black px-2">検索</button>
-        <button type="reset" className="text-md rounded border border-black px-2" onClick={handleReset}>
+        <input
+          type="text"
+          name="query"
+          className="rounded border border-black px-2 py-px dark:border-slate-500 dark:bg-slate-400"
+        />
+        <button className="text-md rounded border border-black px-2 dark:border-slate-500">検索</button>
+        <button
+          type="reset"
+          className="text-md rounded border border-black px-2 dark:border-slate-500"
+          onClick={handleReset}
+        >
           リセット
         </button>
       </form>
@@ -53,22 +64,22 @@ const Home: NextPage<Props> = (props) => {
             return (
               <li className="sm:r-5 mb-5 mr-0 flex flex-col border-b sm:mr-5" key={content.id}>
                 <h2 className="text-2xl font-bold">{content.title}</h2>
-                <div className="mt-3">
-                  <ul className="flex items-center gap-x-2 text-sm">
-                    {content.tags.map((tag) => {
-                      return (
-                        <li className="rounded-full bg-slate-200 px-2" key={tag.id}>
-                          #{tag.tag}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  <time dateTime={content.publishedAt} className="mt-1 block text-xs text-gray-500">
-                    {dayjs(content.publishedAt).locale("ja").format("YYYY年MM月DD日(ddd) HH時mm分")}
-                  </time>
-                </div>
+                <time dateTime={content.publishedAt} className="mt-2 flex items-center text-xs text-gray-500">
+                  <BiTimeFive />
+                  {dayjs(content.publishedAt).locale("ja").format("YYYY.MM.DD")}
+                </time>
+                <ul className="mt-4 flex items-center gap-x-3 text-sm">
+                  {content.tags.map((tag) => {
+                    return (
+                      <li className="flex items-center rounded-full bg-slate-200 px-2 dark:bg-slate-700" key={tag.id}>
+                        <BsTag />
+                        {tag.tag}
+                      </li>
+                    );
+                  })}
+                </ul>
                 <Link href={`/blog/${content.id}`}>
-                  <a>
+                  <a className="w-fit">
                     <button className="mt-3 mb-5 rounded-xl bg-red-600 px-4 py-3 text-sm text-white duration-500 hover:bg-slate-900">
                       READ MORE {">>"}
                     </button>
@@ -83,8 +94,9 @@ const Home: NextPage<Props> = (props) => {
           <ul className="ml-1 flex flex-col gap-y-1">
             {[...props.tags.contents].reverse().map((tag) => {
               return (
-                <li key={tag.id} className="flex items-center border-b pb-1">
-                  #{tag.tag}
+                <li key={tag.id} className="flex items-center border-b pb-2">
+                  <BsTag />
+                  {tag.tag}
                 </li>
               );
             })}

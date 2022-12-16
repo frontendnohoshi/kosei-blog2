@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   debug("MyApp is rendering");
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col dark:bg-black dark:text-slate-100">
       <Header />
       <Component {...pageProps} />
       <Footer />
