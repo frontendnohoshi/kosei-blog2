@@ -48,11 +48,11 @@ const Home: NextPage<Props> = (props) => {
       </form>
       <p className="mt-4 ml-5 text-gray-400">{`${search ? "検索結果" : "記事の総数"}: ${totalCount}件`}</p>
       <div className="mx-5 mt-4 flex flex-col justify-between sm:flex-row">
-        <ul className=" w-full">
+        <ul className="w-full">
           {contents.map((content) => {
             return (
               <li className="sm:r-5 mb-5 mr-0 flex flex-col border-b sm:mr-5" key={content.id}>
-                <h2 className="text-xl font-bold">{content.title}</h2>
+                <h2 className="text-2xl font-bold">{content.title}</h2>
                 <div className="mt-3">
                   <ul className="flex items-center gap-x-2 text-sm">
                     {content.tags.map((tag) => {
@@ -79,10 +79,14 @@ const Home: NextPage<Props> = (props) => {
           })}
         </ul>
         <div className="mb-5">
-          <h3 className="text-md rouded-full  mb-3 w-full bg-red-600 px-3 py-1 font-bold text-white sm:w-60"> #Tags</h3>
+          <h3 className="text-md mb-3 block w-full bg-red-600 px-3 py-1 font-bold text-white sm:w-60">#Tags</h3>
           <ul className="ml-1 flex flex-col gap-y-1">
             {[...props.tags.contents].reverse().map((tag) => {
-              return <li key={tag.id}> #{tag.tag}</li>;
+              return (
+                <li key={tag.id} className="flex items-center border-b pb-1">
+                  #{tag.tag}
+                </li>
+              );
             })}
           </ul>
         </div>

@@ -23,12 +23,12 @@ const BlogId: NextPage<Props> = (props) => {
   }, [router]);
 
   return (
-    <div className="mx-auto mt-5 px-5 ">
+    <div className="mt-5 px-5 sm:mx-auto sm:w-150">
       <h2 className="text-3xl font-bold">{props.title}</h2>
       <time dateTime={props.publishedAt} className="mt-2 block text-xs text-gray-500">
         {dayjs(props.publishedAt).locale("ja").format("YYYY年MM月DD日(ddd) HH時mm分")}
       </time>
-      <article className="prose prose-lg my-8" dangerouslySetInnerHTML={{ __html: props.body }} />
+      <article className="prose-md prose my-8" dangerouslySetInnerHTML={{ __html: props.body }} />
 
       <ul className="flex items-center gap-x-1 text-sm">
         {props.tags.map((tag) => {

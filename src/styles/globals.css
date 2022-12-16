@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* dangerouslySetInnerHTMLの中身 */
+.embedly-embed {
+  width: 100%;
+  min-width: 335px;
+}
