@@ -14,13 +14,15 @@ const Header = memo(() => {
         <div className="flex items-center">
           <Link href={"/"} passHref>
             <a className="font-bold">
-              <h1 className="mb-2 text-4xl ">Powerlifting Life</h1>
+              <h1 className="mb-2 text-4xl ">KOSEI BLOG</h1>
             </a>
           </Link>
-          <ToggleDarkMode />
+          <div className="ml-auto">
+            <ToggleDarkMode />
+          </div>
         </div>
-        <p className="mb-3 text-center text-sm text-red-600 sm:text-left">
-          Long may PowerLifting progress and rise up together with strong values and dedication.
+        <p className="mb-3 text-center text-xs text-red-600 sm:ml-1 sm:text-left">
+          成功の反対は失敗ではなく挑戦しないことである
         </p>
       </div>
     </header>

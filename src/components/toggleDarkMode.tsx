@@ -1,5 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
 
+import { BsSun } from "react-icons/bs";
+import { BsMoon } from "react-icons/bs";
+
 const ToggleDarkMode = memo(() => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   useEffect(() => {
@@ -26,18 +29,22 @@ const ToggleDarkMode = memo(() => {
   };
 
   return (
-    <div className="relative mr-2 ml-auto inline-block w-10 select-none align-middle transition duration-500 ease-in">
-      <input
-        type="checkbox"
-        name="toggle"
-        id="toggle"
-        checked={isDarkMode}
-        className="toggle-checkbox"
-        onChange={handleChangeDarkMode}
-      />
-      <label htmlFor="toggle" className="toggle-label">
-        toggle
-      </label>
+    <div className="flex items-center">
+      <BsSun />
+      <div className="relative mx-2 inline-block w-10 select-none align-middle transition duration-500 ease-in">
+        <input
+          type="checkbox"
+          name="toggle"
+          id="toggle"
+          checked={isDarkMode}
+          className="toggle-checkbox"
+          onChange={handleChangeDarkMode}
+        />
+        <label htmlFor="toggle" className="toggle-label">
+          toggle
+        </label>
+      </div>
+      <BsMoon />
     </div>
   );
 });

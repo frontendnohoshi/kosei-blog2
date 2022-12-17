@@ -48,7 +48,7 @@ const BlogId: NextPage<Props> = (props) => {
         <a>
           <button
             onClick={backToPreviousPage}
-            className="my-5 rounded-xl bg-red-600 px-4 py-3  text-sm text-white duration-500 hover:bg-slate-900"
+            className="my-5 rounded-xl bg-red-600 px-4 py-2  text-sm text-white duration-500 hover:bg-slate-900"
           >
             戻る
           </button>
