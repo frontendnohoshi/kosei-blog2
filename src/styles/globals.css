@@ -2,21 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* dangerouslySetInnerHTMLの中身 */
+/* dangerouslySetInnerHTML(記事本文)の中のiframeのスタイル */
 .embedly-embed {
-  width: 100%;
-  min-width: 335px;
+  @apply w-full;
 }
 
-/* ToggleDarkMode */
-.toggle-checkbox {
-  @apply absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-gray-100 bg-gray-800 focus:outline-none dark:border-gray-400 dark:bg-white;
+/* Pagenationの矢印と数字のスタイル */
+.pagination {
+  @apply mx-auto mt-4 mb-9 flex
+  items-center justify-center gap-x-4;
 }
 
-.toggle-checkbox:checked {
-  @apply right-0 border-gray-400;
+.pagination li a {
+  @apply flex h-7 w-7
+  flex-wrap items-center justify-center border border-slate-900 duration-500 dark:border-slate-100;
 }
 
-.toggle-label {
-  @apply block h-6 cursor-pointer overflow-hidden rounded-full border-2 border-gray-100 bg-gray-100 align-middle text-gray-100 dark:border-gray-400 dark:bg-gray-400 dark:text-gray-400;
+.pagination li a:hover {
+  @apply bg-slate-100 duration-500 dark:bg-slate-700;
+}
+
+.pagination li.pagination__active a {
+  @apply bg-slate-900 text-white duration-500 dark:bg-slate-100 dark:text-black;
+}
+
+.pagination li.pagination__disabled a {
+  @apply border-slate-100 text-slate-100 duration-500 dark:border-slate-700 dark:text-slate-700;
+}
+
+.pagination li.pagination__disabled a:hover {
+  @apply cursor-default bg-white duration-500 dark:bg-black;
 }
