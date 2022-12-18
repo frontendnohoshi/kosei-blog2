@@ -34,12 +34,18 @@ const BlogId: NextPage<Props> = (props) => {
         <BiTimeFive />
         {dayjs(props.publishedAt).locale("ja").format("YYYY年MM月DD日(ddd) HH時mm分")}
       </time>
-      <article className="my-4 text-slate-700 dark:text-slate-100" dangerouslySetInnerHTML={{ __html: props.body }} />
+      <article
+        className="my-4 text-slate-700 duration-500 dark:text-slate-100"
+        dangerouslySetInnerHTML={{ __html: props.body }}
+      />
 
       <ul className="flex items-center gap-x-3 text-sm">
         {props.tags.map((tag) => {
           return (
-            <li className="flex items-center rounded-full bg-slate-200 px-2 dark:bg-slate-700" key={tag.id}>
+            <li
+              className="flex items-center rounded-full bg-slate-200 px-2 duration-500 dark:bg-slate-700"
+              key={tag.id}
+            >
               <BsTag />
               {tag.tag}
             </li>

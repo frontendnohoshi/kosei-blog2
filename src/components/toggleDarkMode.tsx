@@ -31,18 +31,19 @@ const ToggleDarkMode = memo(() => {
   return (
     <div className="flex items-center">
       <BsSun />
-      <div className="relative mx-2 inline-block w-10 select-none align-middle transition duration-500 ease-in">
+      <div className="relative mx-2  w-10">
         <input
           type="checkbox"
           name="toggle"
           id="toggle"
           checked={isDarkMode}
-          className="toggle-checkbox"
+          className="absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-gray-100 bg-gray-800 duration-500  checked:right-0  dark:border-gray-400 dark:bg-white"
           onChange={handleChangeDarkMode}
         />
-        <label htmlFor="toggle" className="toggle-label">
-          toggle
-        </label>
+        <label
+          htmlFor="toggle"
+          className="block h-6 cursor-pointer rounded-full border-2 border-gray-100 bg-gray-100 duration-500 dark:border-gray-400 dark:bg-gray-400"
+        ></label>
       </div>
       <BsMoon />
     </div>
