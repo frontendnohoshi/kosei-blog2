@@ -3,7 +3,7 @@ import "dayjs/locale/ja";
 import { MicroCMSContentId, MicroCMSDate, MicroCMSListResponse } from "microcms-js-sdk";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import { ComponentProps, useCallback, useState } from "react";
+import { ComponentProps, memo, useCallback, useState } from "react";
 import { getDebugger } from "src/components/utils/Debugger";
 import { client } from "src/libs/client";
 import { Blog, Tag } from "src/types/blog";
@@ -16,22 +16,30 @@ type Props = { blogs: MicroCMSListResponse<Blog>; tags: MicroCMSListResponse<Tag
 
 const debug = getDebugger(true);
 
-const Home: NextPage<Props> = (props) => {
+const Home: NextPage<Props> = memo((props) => {
   debug("Home is rendering");
 
   const [search, setSearch] = useState<MicroCMSListResponse<Blog>>();
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   const handleSubmit: ComponentProps<"form">["onSubmit"] = async (event) => {
     event.preventDefault();
     const q = event.currentTarget.query.value;
-    const data = await fetch("api/search", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ q }),
-    });
-    const json: MicroCMSListResponse<Blog> = await data.json();
-    setSearch(json);
-    debug(json);
+    try {
+      setIsSearchLoading(true);
+      const data = await fetch("api/search", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ q }),
+      });
+      const json: MicroCMSListResponse<Blog> = await data.json();
+      setSearch(json);
+      debug(json);
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsSearchLoading(false);
+    }
   };
 
   const handleReset: ComponentProps<"button">["onClick"] = useCallback(() => {
@@ -69,7 +77,7 @@ const Home: NextPage<Props> = (props) => {
       }: ${totalCount}件`}</p>
       <div className="mx-5 mt-4 flex flex-col justify-between sm:flex-row">
         {totalCount === 0 ? (
-          <p className="mb-5 h-full w-full text-center text-xl">No posts...</p>
+          <p className="mb-5 h-full w-full text-center sm:text-xl">記事が見つかりませんでした。</p>
         ) : (
           <ul className="w-full">
             {contents.map((content) => {
@@ -121,7 +129,9 @@ const Home: NextPage<Props> = (props) => {
       </div>
     </main>
   );
-};
+});
+
+Home.displayName = "Home";
 
 export const getStaticProps: GetStaticProps = async () => {
   const blogs = await client.getList({ endpoint: "blog" });

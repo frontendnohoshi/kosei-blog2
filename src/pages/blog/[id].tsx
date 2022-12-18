@@ -18,6 +18,8 @@ type Props = Blog & MicroCMSContentId & MicroCMSDate;
 
 const BlogId: NextPage<Props> = (props) => {
   debug("BlogId is rendering");
+  debug(`BlogId: ${props.id}`);
+
   debug(props);
 
   const router = useRouter();
@@ -32,7 +34,7 @@ const BlogId: NextPage<Props> = (props) => {
         <BiTimeFive />
         {dayjs(props.publishedAt).locale("ja").format("YYYY年MM月DD日(ddd) HH時mm分")}
       </time>
-      <article className="prose-md prose my-4 dark:text-slate-100" dangerouslySetInnerHTML={{ __html: props.body }} />
+      <article className="my-4 text-slate-700 dark:text-slate-100" dangerouslySetInnerHTML={{ __html: props.body }} />
 
       <ul className="flex items-center gap-x-3 text-sm">
         {props.tags.map((tag) => {
