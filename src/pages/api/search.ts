@@ -6,8 +6,8 @@ import { Blog } from "src/types/blog";
 const debug = getDebugger(true);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  debug("search.ts is Loading")
   const data = await client.getList<Blog>({ endpoint: "blog", queries: { q: req.body.q } });
-  // TODO try catchで書く
   res.status(200).json(data);
 };
 
