@@ -1,6 +1,10 @@
-# Next.js + TypeScript + Tailwind CSS + ESLint + Prettier
+# Next.js + TypeScript + TailwindCSS + ESLint + Prettier + microCMS
 
-```bash
-yarn create next-app --example https://github.com/lightsound/Next.js-TypeScript-TailwindCSS-ESLint-Prettier
-```
-# project
+
+# ブログ
+
+趣味の筋トレの記録の為のブログを始めました。
+
+# URL
+
+[KOSEI BLOG](https://kosei-blog2.vercel.app/)
