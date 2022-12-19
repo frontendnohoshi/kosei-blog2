@@ -30,22 +30,22 @@ const ToggleDarkMode = memo(() => {
 
   return (
     <div className="flex items-center">
-      <BsSun />
-      <div className="relative mx-2  w-10">
+      <BsSun className=" drop-shadow-[0px_5px_5px_rgba(255,255,255,1)] duration-500 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0)]" />
+      <div className="relative mx-2 w-10 drop-shadow-[0px_5px_5px_rgba(255,255,255,0.15)]">
         <input
           type="checkbox"
           name="toggle"
           id="toggle"
           checked={isDarkMode}
-          className="absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-gray-100 bg-gray-800 duration-500  checked:right-0  dark:border-gray-400 dark:bg-white"
+          className="absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-slate-100 bg-slate-800 duration-500  checked:right-0  dark:border-slate-600 dark:bg-white"
           onChange={handleChangeDarkMode}
         />
         <label
           htmlFor="toggle"
-          className="block h-6 cursor-pointer rounded-full border-2 border-gray-100 bg-gray-100 duration-500 dark:border-gray-400 dark:bg-gray-400"
+          className="block h-6 cursor-pointer rounded-full border-2 border-slate-100 bg-slate-100 duration-500 dark:border-slate-600 dark:bg-slate-600 "
         ></label>
       </div>
-      <BsMoon />
+      <BsMoon className="duration-500 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,1)]" />
     </div>
   );
 });

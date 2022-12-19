@@ -11,6 +11,7 @@ import { Blog, Tag } from "src/types/blog";
 import { BsTag } from "react-icons/bs";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
+
 import ReactPaginate from "react-paginate";
 
 type Props = { blogs: MicroCMSListResponse<Blog>; tags: MicroCMSListResponse<Tag> };
@@ -34,6 +35,7 @@ const Home: NextPage<Props> = memo((props) => {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ q }),
       });
+      debug(data);
       const json: MicroCMSListResponse<Blog> = await data.json();
       setSearch(json);
       debug(json);
@@ -60,26 +62,30 @@ const Home: NextPage<Props> = memo((props) => {
   const pageCount = Math.ceil(totalCount / contentsPerPage);
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * contentsPerPage) % totalCount;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     setContentOffset(newOffset);
   };
 
   return (
-    <main className="container mx-auto mt-6 flex max-w-5xl flex-col">
+    <main className="container mx-auto my-8  flex max-w-5xl flex-col">
       <form className="mx-auto flex w-full flex-col sm:w-150 sm:flex-row sm:justify-between" onSubmit={handleSubmit}>
         <input
           type="text"
           name="query"
           placeholder="サイト内検索"
-          className="mx-5 mb-4 h-10 rounded-xl border border-black p-3 text-sm duration-500 dark:border-slate-500 dark:bg-slate-400 dark:text-slate-100 dark:placeholder:text-slate-100 sm:mx-0 sm:w-96"
+          className="mx-5 mb-4 h-10 rounded-xl p-3 text-sm drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-500 focus:outline-none dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:placeholder:text-slate-100 sm:mx-0 sm:w-96"
         />
         <div className="mx-5 flex h-10 gap-x-3 sm:mx-0">
-          <button className="flex w-6/12 items-center justify-center rounded-xl bg-red-600 pr-1.5 text-sm text-white duration-500 hover:bg-slate-900 dark:border-slate-500 sm:w-24">
+          <button className="flex w-6/12 items-center justify-center rounded-xl bg-red-600 pr-1.5 text-sm text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] duration-500 hover:bg-slate-900 dark:border-slate-500 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] sm:w-24">
             <AiOutlineSearch />
             検索
           </button>
           <button
             type="reset"
-            className="w-6/12 rounded-xl border border-red-300 text-sm text-red-600 duration-500 hover:bg-red-50 dark:border-slate-500 sm:w-24"
+            className="w-6/12 rounded-xl border border-red-100 bg-white text-sm text-red-600 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-500 hover:bg-red-50 dark:border-slate-500 dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:hover:bg-red-300 sm:w-24"
             onClick={handleReset}
           >
             リセット
@@ -90,7 +96,7 @@ const Home: NextPage<Props> = memo((props) => {
         search ? "検索結果" : "記事の総数"
       }: ${totalCount}件`}</p>
       <div className="mx-5 mt-4 flex flex-col justify-between sm:flex-row">
-        <div className="flex w-full flex-col items-center">
+        <div className="flex w-full flex-col items-center drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.3)]">
           {isSearchLoading ? (
             <p className="mb-5 w-full text-center sm:text-xl">記事を検索中...</p>
           ) : (
@@ -111,7 +117,7 @@ const Home: NextPage<Props> = memo((props) => {
                           {content.tags.map((tag) => {
                             return (
                               <li
-                                className="flex items-center rounded-full bg-slate-200 px-2 duration-500 dark:bg-slate-700"
+                                className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-500  dark:bg-slate-700"
                                 key={tag.id}
                               >
                                 <BsTag />
@@ -122,7 +128,7 @@ const Home: NextPage<Props> = memo((props) => {
                         </ul>
                         <Link href={`/blog/${content.id}`}>
                           <a className="w-fit">
-                            <button className="mt-3 mb-5 rounded-xl bg-red-600 px-4 py-3 text-sm text-white duration-500 hover:bg-slate-900">
+                            <button className="my-5 rounded-xl bg-red-600 px-4 py-3 text-sm text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.1)] duration-500 hover:bg-slate-900">
                               記事を読む {">>"}
                             </button>
                           </a>
@@ -149,13 +155,16 @@ const Home: NextPage<Props> = memo((props) => {
           />
         </div>
         <div className="mb-5">
-          <h3 className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white sm:w-60">
+          <h3 className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.4)] sm:w-60">
             タグ
           </h3>
           <ul className="mx-1.5 flex flex-col gap-y-1">
             {[...props.tags.contents].reverse().map((tag) => {
               return (
-                <li key={tag.id} className="flex items-center border-b pb-2">
+                <li
+                  key={tag.id}
+                  className="flex items-center border-b pb-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
+                >
                   <BsTag />
                   {tag.tag}
                 </li>
