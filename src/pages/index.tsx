@@ -12,7 +12,7 @@ import { BsTag } from "react-icons/bs";
 import { BiTimeFive } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 
-import ReactPaginate from "react-paginate";
+import Pagination from "src/components/Pagination";
 
 type Props = { blogs: MicroCMSListResponse<Blog>; tags: MicroCMSListResponse<Tag> };
 
@@ -84,18 +84,9 @@ const Home: NextPage<Props> = memo((props) => {
 
   // ページネーション
   const contentsPerPage = 4;
-  const [contentOffset, setContentOffset] = useState(0); //コンポーネントにおけない
+  const [contentOffset, setContentOffset] = useState(0);
   const endOffset = contentOffset + contentsPerPage;
-  const currentContents = contentsFilteredByTag.slice(contentOffset, endOffset); // コンポーネントに置けない
-  const pageCount = Math.ceil(contentsFilteredByTag.length / contentsPerPage);
-  const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * contentsPerPage) % currentTotalCount;
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    setContentOffset(newOffset);
-  };
+  const currentContents = contentsFilteredByTag.slice(contentOffset, endOffset);
 
   return (
     <main className="container mx-auto my-8  flex max-w-5xl flex-col">
@@ -170,19 +161,7 @@ const Home: NextPage<Props> = memo((props) => {
               )}
             </>
           )}
-          {/* FIXME 検索機能などを利用したときにactiveページが1に戻るようにしたい */}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5} // アクティブなページを基準にして、そこからいくつページ数を表示するか
-            marginPagesDisplayed={2} // 一番最初と最後を基準にして、そこからいくつページ数を表示するか
-            pageCount={pageCount}
-            previousLabel="<"
-            containerClassName={"pagination"}
-            activeClassName={"pagination__active"}
-            disabledClassName={"pagination__disabled"}
-          />
+          <Pagination itemsPerPage={4} setItemOffset={setContentOffset} itemCount={currentTotalCount} />
         </div>
         <div className="mb-5">
           <h3 className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.4)] sm:w-60">
@@ -196,7 +175,7 @@ const Home: NextPage<Props> = memo((props) => {
                     type="checkbox"
                     id={tag.id}
                     checked={selectedTags.includes(tag.tag)}
-                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400 hover:bg-red-400"
+                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400"
                     onChange={handleSelectTag}
                     value={tag.tag}
                   />
