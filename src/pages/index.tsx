@@ -3,7 +3,7 @@ import "dayjs/locale/ja";
 import { MicroCMSListResponse } from "microcms-js-sdk";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import { ComponentProps, memo, useState } from "react";
+import { ComponentProps, memo, useCallback, useState } from "react";
 import { getDebugger } from "src/components/utils/Debugger";
 import { client } from "src/libs/client";
 import { Blog, Tag } from "src/types/blog";
@@ -20,7 +20,9 @@ const debug = getDebugger(true);
 
 const Home: NextPage<Props> = memo((props) => {
   debug("Home is rendering");
+  debug(props);
 
+  // 検索
   const [search, setSearch] = useState<MicroCMSListResponse<Blog>>();
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
@@ -52,16 +54,42 @@ const Home: NextPage<Props> = memo((props) => {
   };
 
   const contents = search ? search.contents : props.blogs.contents;
-  const totalCount = search ? search.totalCount : props.blogs.totalCount;
+
+  // タグ絞り込み
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const contentsFilteredByTag = contents.filter((article) => {
+    return selectedTags.every((tag) => {
+      const findResult = article.tags.find((articleTag) => articleTag.tag === tag);
+      if (findResult) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+
+  const handleSelectTag = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedValue = event.target.value;
+      if (selectedTags.includes(selectedValue)) {
+        setSelectedTags(selectedTags.filter((tag) => tag !== selectedValue));
+      } else {
+        setSelectedTags([...selectedTags, selectedValue]);
+      }
+    },
+    [selectedTags]
+  );
+
+  const currentTotalCount = selectedTags.length === 0 ? contents.length : contentsFilteredByTag.length;
 
   // ページネーション
   const contentsPerPage = 4;
-  const [contentOffset, setContentOffset] = useState(0);
+  const [contentOffset, setContentOffset] = useState(0); //コンポーネントにおけない
   const endOffset = contentOffset + contentsPerPage;
-  const currentContents = contents.slice(contentOffset, endOffset);
-  const pageCount = Math.ceil(totalCount / contentsPerPage);
+  const currentContents = contentsFilteredByTag.slice(contentOffset, endOffset); // コンポーネントに置けない
+  const pageCount = Math.ceil(contentsFilteredByTag.length / contentsPerPage);
   const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * contentsPerPage) % totalCount;
+    const newOffset = (event.selected * contentsPerPage) % currentTotalCount;
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -94,14 +122,14 @@ const Home: NextPage<Props> = memo((props) => {
       </form>
       <p className="mx-5 mt-5 border-t pt-5 text-gray-400">{`${
         search ? "検索結果" : "記事の総数"
-      }: ${totalCount}件`}</p>
+      }: ${currentTotalCount}件`}</p>
       <div className="mx-5 mt-4 flex flex-col justify-between sm:flex-row">
         <div className="flex w-full flex-col items-center drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.3)]">
           {isSearchLoading ? (
             <p className="mb-5 w-full text-center sm:text-xl">記事を検索中...</p>
           ) : (
             <>
-              {totalCount === 0 ? (
+              {currentTotalCount === 0 ? (
                 <p className="mb-5 w-full text-center sm:text-xl">記事が見つかりませんでした。</p>
               ) : (
                 <ul className="w-full">
@@ -116,12 +144,14 @@ const Home: NextPage<Props> = memo((props) => {
                         <ul className="mt-4 flex items-center gap-x-3 text-sm">
                           {content.tags.map((tag) => {
                             return (
-                              <li
-                                className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-500  dark:bg-slate-700"
-                                key={tag.id}
-                              >
-                                <BsTag />
-                                {tag.tag}
+                              <li key={tag.id}>
+                                <label
+                                  htmlFor={tag.id}
+                                  className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-500  dark:bg-slate-700"
+                                >
+                                  <BsTag />
+                                  {tag.tag}
+                                </label>
                               </li>
                             );
                           })}
@@ -140,7 +170,7 @@ const Home: NextPage<Props> = memo((props) => {
               )}
             </>
           )}
-          {/* FIXME 検索機能を利用したときにactiveページが1に戻るようにしたい */}
+          {/* FIXME 検索機能などを利用したときにactiveページが1に戻るようにしたい */}
           <ReactPaginate
             breakLabel="..."
             nextLabel=">"
@@ -158,15 +188,25 @@ const Home: NextPage<Props> = memo((props) => {
           <h3 className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.4)] sm:w-60">
             タグ
           </h3>
-          <ul className="mx-1.5 flex flex-col gap-y-1">
+          <ul className="mx-1 flex flex-col gap-y-1">
             {[...props.tags.contents].reverse().map((tag) => {
               return (
-                <li
-                  key={tag.id}
-                  className="flex items-center border-b pb-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
-                >
-                  <BsTag />
-                  {tag.tag}
+                <li key={tag.id} className="relative border-b pb-2">
+                  <input
+                    type="checkbox"
+                    id={tag.id}
+                    checked={selectedTags.includes(tag.tag)}
+                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400"
+                    onChange={handleSelectTag}
+                    value={tag.tag}
+                  />
+                  <label
+                    htmlFor={tag.id}
+                    className="flex cursor-pointer items-center rounded drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
+                  >
+                    <BsTag />
+                    {tag.tag}
+                  </label>
                 </li>
               );
             })}
