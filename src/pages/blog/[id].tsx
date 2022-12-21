@@ -28,14 +28,14 @@ const BlogId: NextPage<Props> = (props) => {
   }, [router]);
 
   return (
-    <div className="mt-5 px-5 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.2)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.2)] sm:mx-auto sm:w-150">
+    <div className="my-8 px-5 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.2)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.2)] sm:mx-auto sm:w-150">
       <h2 className="text-3xl font-bold">{props.title}</h2>
       <time dateTime={props.publishedAt} className="mt-2 flex items-center text-xs text-gray-500">
         <BiTimeFive />
         {dayjs(props.publishedAt).locale("ja").format("YYYY年MM月DD日(ddd) HH時mm分")}
       </time>
       <article
-        className="my-4 text-slate-700 duration-500 dark:text-slate-100"
+        className="my-4 text-slate-700 duration-100 dark:text-slate-100"
         dangerouslySetInnerHTML={{ __html: props.body }}
       />
 
@@ -43,7 +43,7 @@ const BlogId: NextPage<Props> = (props) => {
         {props.tags.map((tag) => {
           return (
             <li
-              className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-500 dark:bg-slate-700 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.1)]"
+              className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-100 dark:bg-slate-700 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.1)]"
               key={tag.id}
             >
               <BsTag />
@@ -56,7 +56,7 @@ const BlogId: NextPage<Props> = (props) => {
         <a>
           <button
             onClick={backToPreviousPage}
-            className="my-5 rounded-xl bg-red-600 px-4 py-2  text-sm text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.15)] duration-500 hover:bg-slate-900 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.2)]"
+            className="my-7 rounded-xl bg-red-600 px-4 py-2  text-sm text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.15)] duration-500 hover:bg-slate-900 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.2)]"
           >
             戻る
           </button>

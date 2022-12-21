@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   debug("MyApp is rendering");
 
   return (
-    <div className="flex min-h-screen flex-col duration-500 dark:bg-black dark:text-slate-100">
+    <div className="flex min-h-screen flex-col duration-100 dark:bg-black dark:text-slate-100">
       <Head>
         <title>KOSEI BLOG</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

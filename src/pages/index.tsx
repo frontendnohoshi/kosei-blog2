@@ -104,7 +104,7 @@ const Home: NextPage<Props> = memo((props) => {
           type="text"
           name="query"
           placeholder="サイト内検索"
-          className="mx-5 mb-4 h-10 rounded-xl p-3 text-sm drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-500 focus:outline-none dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:placeholder:text-slate-100 sm:mx-0 sm:w-96"
+          className="mx-5 mb-4 h-10 rounded-xl p-3 text-sm drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-100 focus:outline-none dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:placeholder:text-slate-100 sm:mx-0 sm:w-96"
         />
         <div className="mx-5 flex h-10 gap-x-3 sm:mx-0">
           <button className="flex w-6/12 items-center justify-center rounded-xl bg-red-600 pr-1.5 text-sm text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] duration-500 hover:bg-slate-900 dark:border-slate-500 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] sm:w-24">
@@ -113,7 +113,7 @@ const Home: NextPage<Props> = memo((props) => {
           </button>
           <button
             type="reset"
-            className="w-6/12 rounded-xl border border-red-100 bg-white text-sm text-red-600 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-500 hover:bg-red-50 dark:border-slate-500 dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:hover:bg-red-300 sm:w-24"
+            className="w-6/12 rounded-xl border border-red-100 bg-white text-sm text-red-600 drop-shadow-[0px_5px_5px_rgba(0,0,0,0.3)] duration-100 hover:bg-red-50 dark:border-slate-500 dark:bg-slate-600 dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.5)] dark:hover:bg-red-300 sm:w-24"
             onClick={handleReset}
           >
             リセット
@@ -147,7 +147,7 @@ const Home: NextPage<Props> = memo((props) => {
                               <li key={tag.id}>
                                 <label
                                   htmlFor={tag.id}
-                                  className="flex items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)] duration-500  dark:bg-slate-700"
+                                  className="flex cursor-pointer items-center rounded-full bg-slate-200 px-2 drop-shadow-[0px_5px_5px_rgba(0,0,0,-0.15)]  duration-100 dark:bg-slate-700"
                                 >
                                   <BsTag />
                                   {tag.tag}
@@ -196,15 +196,15 @@ const Home: NextPage<Props> = memo((props) => {
                     type="checkbox"
                     id={tag.id}
                     checked={selectedTags.includes(tag.tag)}
-                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400"
+                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400 hover:bg-red-400"
                     onChange={handleSelectTag}
                     value={tag.tag}
                   />
                   <label
                     htmlFor={tag.id}
-                    className="flex cursor-pointer items-center rounded drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
+                    className="flex cursor-pointer items-center drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
                   >
-                    <BsTag />
+                    <BsTag className="mr-1 pl-1" />
                     {tag.tag}
                   </label>
                 </li>
