@@ -21,22 +21,18 @@
   @apply flex h-full w-full items-center justify-center;
 }
 
-.pagination li:hover {
-  @apply bg-slate-100 duration-100 dark:bg-slate-600;
-}
-
 .pagination li.pagination__active {
   @apply bg-slate-900 text-white duration-100 dark:bg-slate-100 dark:text-black;
 }
 
+.pagination li.pagination__active a {
+  @apply cursor-default;
+}
+
 .pagination li.pagination__disabled {
-  @apply border-slate-100 bg-white text-slate-100 duration-100 dark:border-slate-700 dark:bg-black dark:text-slate-700;
+  @apply pointer-events-none border border-slate-300 text-slate-300 duration-100  dark:border-slate-700 dark:text-slate-700;
 }
 
 .pagination li.pagination__disabled a {
   @apply cursor-default;
-}
-
-.pagination li.pagination__disabled:hover {
-  @apply bg-white duration-100 dark:bg-black;
 }
