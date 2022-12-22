@@ -3,7 +3,7 @@ import "dayjs/locale/ja";
 import { MicroCMSListResponse } from "microcms-js-sdk";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import { ComponentProps, memo, useCallback, useState } from "react";
+import { ComponentProps, memo, useCallback, useEffect, useState } from "react";
 import { getDebugger } from "src/components/utils/Debugger";
 import { client } from "src/libs/client";
 import { Blog, Tag } from "src/types/blog";
@@ -50,6 +50,7 @@ const Home: NextPage<Props> = memo((props) => {
 
   const handleReset: ComponentProps<"button">["onClick"] = (event) => {
     setSearch(undefined);
+    setSelectedTags([]);
     setContentOffset(0);
   };
 
@@ -81,6 +82,17 @@ const Home: NextPage<Props> = memo((props) => {
   );
 
   const currentTotalCount = selectedTags.length === 0 ? contents.length : contentsFilteredByTag.length;
+
+  // タグを選択したときに勝手にスクロールされないように
+  useEffect(() => {
+    if (!selectedTags) {
+      return;
+    } else if (window.innerWidth < 640) {
+      const targetEl = document.getElementById("tagList");
+      targetEl?.scrollIntoView();
+    }
+    return;
+  }, [selectedTags]);
 
   // ページネーション
   const contentsPerPage = 4;
@@ -164,7 +176,10 @@ const Home: NextPage<Props> = memo((props) => {
           <Pagination itemsPerPage={4} setItemOffset={setContentOffset} itemCount={currentTotalCount} />
         </div>
         <div className="mb-5">
-          <h3 className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.4)] sm:w-60">
+          <h3
+            id="tagList"
+            className="text-md mb-3 block w-full rounded bg-red-600 py-1.5 pl-2 font-bold text-white drop-shadow-[0px_5px_5px_rgba(0,0,0,0.35)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.4)] sm:w-60"
+          >
             タグ
           </h3>
           <ul className="mx-1 flex flex-col gap-y-1">
