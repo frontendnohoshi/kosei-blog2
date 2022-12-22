@@ -50,7 +50,6 @@ const Home: NextPage<Props> = memo((props) => {
 
   const handleReset: ComponentProps<"button">["onClick"] = (event) => {
     setSearch(undefined);
-    setSelectedTags([]);
     setContentOffset(0);
   };
 
@@ -58,7 +57,7 @@ const Home: NextPage<Props> = memo((props) => {
 
   // タグ絞り込み
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const contentsFilteredByTag = contents.filter((article) => {
+  const FilteredByTagContents = contents.filter((article) => {
     return selectedTags.every((tag) => {
       const findResult = article.tags.find((articleTag) => articleTag.tag === tag);
       if (findResult) {
@@ -81,8 +80,6 @@ const Home: NextPage<Props> = memo((props) => {
     [selectedTags]
   );
 
-  const currentTotalCount = selectedTags.length === 0 ? contents.length : contentsFilteredByTag.length;
-
   // タグを選択したときに勝手にスクロールされないように
   useEffect(() => {
     if (!selectedTags) {
@@ -94,11 +91,13 @@ const Home: NextPage<Props> = memo((props) => {
     return;
   }, [selectedTags]);
 
+  const currentTotalCount = selectedTags.length === 0 ? contents.length : FilteredByTagContents.length;
+
   // ページネーション
   const contentsPerPage = 4;
   const [contentOffset, setContentOffset] = useState(0);
   const endOffset = contentOffset + contentsPerPage;
-  const currentContents = contentsFilteredByTag.slice(contentOffset, endOffset);
+  const currentContents = FilteredByTagContents.slice(contentOffset, endOffset);
 
   return (
     <main className="container mx-auto my-8  flex max-w-5xl flex-col">
@@ -190,13 +189,13 @@ const Home: NextPage<Props> = memo((props) => {
                     type="checkbox"
                     id={tag.id}
                     checked={selectedTags.includes(tag.tag)}
-                    className="absolute h-6 w-full appearance-none rounded duration-100 checked:bg-red-400"
+                    className="absolute h-7 w-full appearance-none rounded duration-100 checked:bg-red-400"
                     onChange={handleSelectTag}
                     value={tag.tag}
                   />
                   <label
                     htmlFor={tag.id}
-                    className="flex cursor-pointer items-center drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
+                    className="flex cursor-pointer items-center text-lg drop-shadow-[0px_5px_5px_rgba(0,0,0,0.25)] dark:drop-shadow-[0px_5px_5px_rgba(255,255,255,0.6)]"
                   >
                     <BsTag className="mr-1 pl-1" />
                     {tag.tag}
