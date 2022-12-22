@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { VFC } from "react";
 import { memo } from "react";
 import ToggleDarkMode from "src/components/toggleDarkMode";
 import { getDebugger } from "src/components/utils/Debugger";
 
 const debug = getDebugger(true);
 
-const Header = memo(() => {
+const Header: VFC = memo(() => {
   debug("Header is rendering");
 
   return (
@@ -21,7 +22,7 @@ const Header = memo(() => {
             <ToggleDarkMode />
           </div>
         </div>
-        <div className="flex flex-col gap-x-2 sm:flex-row drop-shadow-[0px_0px_5px_rgba(220,255,255,0.25)]">
+        <div className="flex flex-col gap-x-2 drop-shadow-[0px_0px_5px_rgba(220,255,255,0.25)] sm:flex-row">
           <p className="mb-1 text-center text-xs text-red-600 sm:ml-1 sm:text-left">
             成功の反対は失敗ではなく挑戦しないことである
           </p>

@@ -1,11 +1,10 @@
-import { NextPage } from "next";
-import { memo } from "react";
+import { memo, VFC } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { getDebugger } from "src/components/utils/Debugger";
 
 const debug = getDebugger(true);
 
-const Footer = memo(() => {
+const Footer: VFC = memo(() => {
   debug("Footer is rendering");
 
   return (

@@ -2,6 +2,7 @@
   /* FIXME 検索機能などを利用したときにactiveページが1に戻るようにしたい */
 }
 
+import { VFC } from "react";
 import { Dispatch, memo, SetStateAction, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { getDebugger } from "src/components/utils/Debugger";
@@ -14,7 +15,7 @@ type PaginationProps = {
 
 const debug = getDebugger(true);
 
-const Pagination = memo(({ itemsPerPage, setItemOffset, itemCount }: PaginationProps) => {
+const Pagination: VFC<PaginationProps> = memo(({ itemsPerPage, setItemOffset, itemCount }) => {
   debug("Pagination is rendering");
 
   const pageCount = Math.ceil(itemCount / itemsPerPage);

@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, VFC } from "react";
 
 import { BsSun } from "react-icons/bs";
 import { BsMoon } from "react-icons/bs";
 
-const ToggleDarkMode = memo(() => {
+const ToggleDarkMode: VFC = memo(() => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   useEffect(() => {
     if (
