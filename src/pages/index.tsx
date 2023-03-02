@@ -82,13 +82,10 @@ const Home: NextPage<Props> = memo((props) => {
 
   // タグを選択したときに勝手にスクロールされないように
   useEffect(() => {
-    if (!selectedTags) {
-      return;
-    } else if (window.innerWidth < 640) {
+    if (selectedTags && window.innerWidth < 640px) {
       const targetEl = document.getElementById("tagList");
       targetEl?.scrollIntoView();
-    }
-    return;
+    } 
   }, [selectedTags]);
 
   const currentTotalCount = selectedTags.length === 0 ? contents.length : FilteredByTagContents.length;
